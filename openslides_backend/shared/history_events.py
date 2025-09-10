@@ -88,7 +88,7 @@ def calculate_history_event_payloads(
         if flag:
             flag = False
             logging.error(f"Update HE/286: {item}")
-    for item in update_events:
+    for item in create_events:
         if item == "history_entry/286":
             flag = True
         if flag:
