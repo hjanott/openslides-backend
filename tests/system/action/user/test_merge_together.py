@@ -955,14 +955,13 @@ class UserMergeTogether(BaseVoteTestCase):
 
     def create_polls_with_correct_votes(self) -> None:
         self.set_up_polls_for_merge()
-        self.request_multi("poll.start", [{"id": i} for i in range(1, 7)])
+        self.request_multi("poll.start", [{"id": i} for i in [3, 4]])
         self.login(4)
         self.request("poll.vote", {"id": 1, "value": "N"}, stop_poll_after_vote=False)
         self.request(
             "poll.vote",
             {"id": 1, "value": "N", "user_id": 5},
             start_poll_before_vote=False,
-            stop_poll_after_vote=False,
         )
         self.login(2)
         self.request(
@@ -1133,19 +1132,13 @@ class UserMergeTogether(BaseVoteTestCase):
 
     def test_merge_with_polls_all_errors(self) -> None:
         self.set_up_polls_for_merge()
-        self.request_multi("poll.start", [{"id": i} for i in range(1, 7)])
+        self.request_multi("poll.start", [{"id": i} for i in [3, 4]])
         self.login(4)
+        self.request("poll.vote", {"id": 1, "value": "N"}, stop_poll_after_vote=False)
         self.request(
             "poll.vote",
-            {"id": 1, "value": "N"},
+            {"id": 1, "value": "N", "user_id": 5},
             start_poll_before_vote=False,
-            stop_poll_after_vote=False,
-        )
-        self.request(
-            "poll.vote",
-            {"id": 2, "value": {"4": "N"}, "user_id": 5},
-            start_poll_before_vote=False,
-            stop_poll_after_vote=False,
         )
         self.login(2)
         self.request(
